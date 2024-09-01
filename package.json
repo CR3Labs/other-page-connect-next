@@ -1,0 +1,43 @@
+{
+  "name": "nextjs-siwop-mml",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p  3001",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@mml-io/networked-dom-document": "^0.18.0",
+    "@otherpage/connect": "^0.2.0",
+    "@otherpage/connect-next-siwop": "^0.2.0",
+    "axios": "^1.7.5",
+    "ethers": "^5",
+    "ioredis": "^5.4.1",
+    "mml-web": "^0.18.0",
+    "mml-web-runner": "^0.18.0",
+    "next": "12.3.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-unity-webgl": "^9.5.2",
+    "tailwindcss": "^3.4.10",
+    "three": "^0.168.0"
+  },
+  "devDependencies": {
+    "@types/node": "18.7.18",
+    "@types/react": "^18.0.6",
+    "@types/react-dom": "^18.0.2",
+    "@types/three": "^0.167.2",
+    "autoprefixer": "^10.4.20",
+    "eslint": "8.23.1",
+    "eslint-config-next": "12.3.0",
+    "typescript": "^5.0.4"
+  },
+  "peerDependencies": {
+    "@tanstack/react-query": "^5.17.15",
+    "siwe": "^2.1.4",
+    "viem": "^2.0.6",
+    "wagmi": "^2.2.1"
+  }
+}

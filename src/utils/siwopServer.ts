@@ -20,9 +20,10 @@ export const siwopServer = configureServerSideSIWOP({
   },
   options: {
     async afterToken(req, res, session, token) {
-      const client = new Redis(`rediss://default:${process.env.REDIS_PASS}@thankful-beetle-60647.upstash.io:6379`);
-      await client.set('op_token', token.access_token);
-      await client.set('op_refresh_token', token.refresh_token);
-    }
+      const redis = new Redis(`rediss://default:${process.env.REDIS_PASS}@thankful-beetle-60647.upstash.io:6379`);
+      // const redis = new Redis(`redis://localhost:6379`);
+      await redis.set(`op_token:${session.uid}`, token.access_token);
+      await redis.set(`op_refresh_token:${session.uid}`, token.refresh_token);
+    },
   }
 });

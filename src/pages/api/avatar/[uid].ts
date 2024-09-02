@@ -1,9 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import Redis from 'ioredis';
-import axios from 'axios';
+import axios, { Axios, AxiosError } from 'axios';
 
 // Create a Redis client
 const redis = new Redis(`rediss://default:${process.env.REDIS_PASS}@thankful-beetle-60647.upstash.io:6379`);
+// const redis = new Redis(`redis://localhost:6379`);
 
 type DataResponse = {
   data?: any;
@@ -12,6 +13,26 @@ type DataResponse = {
 
 const API_URL = 'https://alpha-api.other.page/v1';
 
+async function refreshToken(uid: string) {
+  const token = await redis.get(`op_refresh_token:${uid}`);
+
+  const { data } = await axios.post(`${API_URL}/connect/oauth2-token`, {
+    grant_type: 'refresh_token',
+    client_id: process.env.NEXT_PUBLIC_SIWOP_CLIENT_ID,
+    client_secret: process.env.SIWOP_CLIENT_SECRET,
+    refresh_token: token,
+    scope: 'avatar.read wallets.read twitter.read discord.read tokens.read communities.read',
+  });
+
+  await redis.set('op_token', data.access_token);
+  await redis.set('op_refresh_token', data.refresh_token);
+}
+
+/**
+ * Retrieve a connect users avatar
+ * @param accessToken 
+ * @returns 
+ */
 async function getAvatar(
   accessToken: string  
 ) {
@@ -27,11 +48,10 @@ async function getAvatar(
   return data;
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse<DataResponse>) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse<DataResponse>) {  
   if (req.method === 'GET') {
     try {
-      // fetch token from Redis
-      const token = await redis.get('op_token');
+      const token = await redis.get(`op_token:${req.query.uid}`);
 
       if (token === null) {
         return res.status(404).json({ error: 'Data not found' });
@@ -39,9 +59,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
       const data = await getAvatar(token);
 
-      // Send response with the data from the external API
       res.status(200).json(data);
-    } catch (error) {
+    } catch (error: any) {
+
+      // refresh token and retry request
+      if (error?.status === 401 && !req.query.retry) {
+        await refreshToken(req.query.uid as string);
+        req.query.retry = 'true';
+        return handler(req, res);
+      }
+
       console.error('Error:', error);
       res.status(500).json({ error: 'Internal Server Error' });
     }

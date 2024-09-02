@@ -33,7 +33,10 @@ export default function Home({ address }: { address?: string }) {
 
   useEffect(() => {
     setMML(null);
-    fetch('/api/avatar').then(res => res.json()).then(avatar => {
+
+    if (!data?.uid) return;
+      
+    fetch(`/api/avatar/${data.uid}`).then(res => res.json()).then(avatar => {
       const loadout = avatar?.loadouts?.find((l: any) => l.type === 'threejs');
       if (loadout) {
         setMML(loadout?.model);

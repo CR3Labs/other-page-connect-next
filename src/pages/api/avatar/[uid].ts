@@ -24,8 +24,8 @@ async function refreshToken(uid: string) {
     scope: 'avatar.read wallets.read twitter.read discord.read tokens.read communities.read',
   });
 
-  await redis.set('op_token', data.access_token);
-  await redis.set('op_refresh_token', data.refresh_token);
+  await redis.set(`op_token:${uid}`, data.access_token);
+  await redis.set(`op_refresh_token:${uid}`, data.refresh_token);
 }
 
 /**
@@ -61,7 +61,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
       res.status(200).json(data);
     } catch (error: any) {
-
+      console.log(error);
       // refresh token and retry request
       if (error?.status === 401 && !req.query.retry) {
         await refreshToken(req.query.uid as string);

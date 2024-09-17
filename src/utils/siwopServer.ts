@@ -3,7 +3,7 @@ import Redis from "ioredis"
 
 export const siwopServer = configureServerSideSIWOP({
   config: {
-    audience: 'localhost:3001',
+    audience: '127.0.0.1:3004',
     clientId: process.env.NEXT_PUBLIC_SIWOP_CLIENT_ID,
     redirectUri: process.env.NEXT_PUBLIC_SIWOP_REDIRECT_URI,
     clientSecret: process.env.SIWOP_CLIENT_SECRET,

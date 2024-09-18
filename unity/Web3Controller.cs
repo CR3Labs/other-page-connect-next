@@ -23,9 +23,9 @@ public class Web3Controller : MonoBehaviour
         }
     }
 
-    public void SiweAuthChange(string userId)
+    public void SiweChange(string address)
     {
-        Debug.Log("Auth state: " + userId);
+        Debug.Log("Auth state: " + address);
     }
 
     public void SiwopChange(string userId)

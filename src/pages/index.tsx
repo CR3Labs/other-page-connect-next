@@ -2,21 +2,19 @@
 
 import { useAppContext } from '@/contexts/app-provider';
 import { ConnectButton, useSIWOP } from '@otherpage/connect';
-import { Fragment, Suspense, useEffect, useState } from 'react';
+import Link from 'next/link';
+import { Fragment, useEffect, useState } from 'react';
 
-import dynamic from 'next/dynamic'
- 
-const DynamicMML = dynamic(() => import('../components/mml.component'), {
-  loading: () => <p>Loading...</p>,
-  ssr: false,
-})
+export default function Home() {
+  const { toggleMode, handleSetPrimaryColor, mode, primaryColor } =
+    useAppContext();
 
-export default function Home({ address }: { address?: string }) {
+  const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    handleSetPrimaryColor(e.target.value as `#${string}`);
+  };
   const { appUrl, clientId, isSignedIn, data } = useSIWOP();
-  const [mml, setMML] = useState<string | null>(null);
   const [wt, setWt] = useState<any>(new Date().getTime());
-  const [badges, setBadges] = useState<any[]>([]);
-  const [name, setName] = useState<string | null>(null);
+  const [avatar, setAvatar] = useState<any>(null);
 
   const openAccount = () => {
     const left = (window.innerWidth / 2) - 400;
@@ -32,26 +30,26 @@ export default function Home({ address }: { address?: string }) {
   };
 
   useEffect(() => {
-    setMML(null);
+    setAvatar(null);
 
     if (!data?.uid) return;
       
     fetch(`/api/avatar/${data.uid}`).then(res => res.json()).then(avatar => {
-      const loadout = avatar?.loadouts?.find((l: any) => l.type === 'threejs');
-      if (loadout) {
-        setMML(loadout?.model);
-      }
+      console.log(avatar);
       if (avatar) {
-        setName(avatar.name);
-        setBadges(avatar.badges?.sort((a: any, b: any) => b.slotId - a.slotId)?.map((b: any) => b.badge));
+        setAvatar(avatar);
       }
     })
-  }, [isSignedIn, wt, name]);
+  }, [isSignedIn, wt]);
 
   return (
-    <main className="flex min-h-[calc(100vh-100px)] w-screen relative flex-col">
+    <main className="flex min-h-[calc(100vh-80px)] w-screen relative flex-col">
       <div className="flex justify-between bg-white p-4 border-b border-neutral-200">
-        <img className="w-40" src="https://somnia.network/wp-content/uploads/2024/03/logo-somnia-footer.png" />
+        <nav className="flex gap-2 items-center">
+          <Link href="/"><button className="text-lg border-neutral-500 border px-3 py-1 rounded-md">Home</button></Link>
+          <Link href="/mml"><button className="text-lg hover:border-neutral-400 border px-3 py-1 rounded-md">MML</button></Link>
+          <Link href="/unity"><button className="text-lg hover:border-neutral-400 border px-3 py-1 rounded-md">Unity</button></Link>
+        </nav>
         <div className="flex items-center">
         <ConnectButton />
         {isSignedIn && <button className="bg-neutral-900 text-white rounded-md p-3 ml-1 text-sm" onClick={openAccount}>
@@ -59,12 +57,47 @@ export default function Home({ address }: { address?: string }) {
           </button>}
         </div>
       </div>
-      <div className="flex justify-center min-h-screen w-screen">
-        <div className="h-[800px] w-full rounded-lg flex justify-center items-center flex-col">
+      <div className="absolute items-start left-4 top-24 border rounded-lg border-neutral-300">
+        <div className="font-medium text-center bg-neutral-300 text-black rounded-t-lg p-2 w-full">Connect Modal Theme</div>
+        <div className="p-4 flex flex-col gap-4">
+          <button
+            onClick={toggleMode}
+            className={`shadow p-2 rounded-md ${mode === 'dark' ? 'bg-black text-white' : 'bg-white text-black'}`}
+          >
+            Mode: {mode}
+          </button>
+          <div className="flex items-center gap-2">
+            <label htmlFor="color">Primary Color:</label>
+            <input
+              type="color"
+              className="cursor-pointer"
+              id="color"
+              value={primaryColor}
+              onChange={handleColorChange}
+            />
+          </div>
+        </div>
+      </div>
+      <div className="flex justify-center min-h-[calc(100vh-80px)] w-screen">
+        <div className="w-full rounded-lg flex justify-center items-center flex-col">
           <Fragment>
-            {!isSignedIn && (<div className="text-lg mb-6 font-medium">Log in to View</div>)}
-            {isSignedIn && !mml && (<div className="text-lg mb-6 font-medium">No Avatar Model Found</div>)}
-            {isSignedIn && mml && <DynamicMML name={name || ''} model={mml} badges={badges} />}
+            {!isSignedIn && (
+              <div className="flex flex-col items-center gap-6">
+                <img src="https://cdn.other.page/op-logo-black.png"/>
+                <ConnectButton />
+              </div>
+            )}
+            {isSignedIn && (<div>
+              <div className="text-lg mb-6 font-medium">Connected Avatar</div>
+              <div className="flex justify-start items-center gap-4">
+                <img src={avatar?.token?.image} className="rounded-full w-[80px]" alt="Avatar" />
+                <div className="text-xl">{avatar?.name}</div>
+              </div>
+              <div className="flex flex-col gap-1 mt-4">
+                <div className="text-md">Token ID: {avatar?.token?.tokenId}</div>
+                <div className="text-md max-w-[200px] overflow-ellipsis overflow-hidden">{avatar?.token?.contract}</div>
+              </div>
+            </div>)}
           </Fragment>
         </div>
       </div>

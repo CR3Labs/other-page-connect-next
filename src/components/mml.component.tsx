@@ -3,7 +3,6 @@ import { MMLClient } from './mml-client.component';
 import { EditableNetworkedDOM, IframeObservableDOMFactory } from 'mml-web-runner';
 
 function createDocumentCode(code: string): string {
-  console.log('code', code);
   return `<m-group z="1" rx="10" y="-1">${code}</m-group>`;
 }
 
@@ -15,7 +14,7 @@ export default function MML({ name, model, badges }: { name: string, model: stri
     const document = new EditableNetworkedDOM('http://example.com/index.html', IframeObservableDOMFactory, true);
     document.load(
       createDocumentCode(
-        `<m-model anim="https://cdn.other.page/animation/0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.glb" src="${model}" sx="4.75" sy="4.75" sz="4.25"></m-model>` +
+        `<m-model src="${model}" sx="4.75" sy="4.75" sz="4.25"></m-model>` +
         `<m-label
             id="label"
             color="#333"

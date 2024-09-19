@@ -32,15 +32,14 @@ export default function Home() {
   useEffect(() => {
     setAvatar(null);
 
-    if (!data?.uid) return;
+    if (!data?.id) return;
       
-    fetch(`/api/avatar/${data.uid}`).then(res => res.json()).then(avatar => {
-      console.log(avatar);
+    fetch(`/api/avatar/${data.id}`).then(res => res.json()).then(avatar => {
       if (avatar) {
         setAvatar(avatar);
       }
     })
-  }, [isSignedIn, wt]);
+  }, [isSignedIn, data, wt]);
 
   return (
     <main className="flex min-h-[calc(100vh-80px)] w-screen relative flex-col">

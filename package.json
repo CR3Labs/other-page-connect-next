@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@mml-io/networked-dom-document": "^0.18.0",
-    "@otherpage/connect": "^0.2.0",
-    "@otherpage/connect-next-siwop": "^0.2.0",
+    "@otherpage/connect": "^0.3.0",
+    "@otherpage/connect-next-siwop": "^0.3.0",
     "axios": "^1.7.5",
     "ethers": "^5",
     "ioredis": "^5.4.1",

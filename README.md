@@ -2,6 +2,10 @@
 
 This project provides a full example of how to implement [Sign in With Other Page](packages/opconnect-next-siwop) in a Nextjs app. Sign in With Other Page acts as a drop in replacement for other forms of authentication, enabling your users to login once across all of your apps and bring their avatars and profile data with them.
 
+## Live Demo
+
+[other-page-connect-next.vercel.app](https://other-page-connect-next.vercel.app)
+
 ## Running the example
 
 1. Copy the `.env.example` file to `.env.local` and fill in the values

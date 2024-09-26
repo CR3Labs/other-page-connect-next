@@ -38,9 +38,9 @@ export default function UnityView() {
     <main className="bg-neutral-300">
       <div className="flex justify-between bg-white p-4 border-b border-neutral-200 absolute top-0 z-10 w-screen">
         <nav className="flex gap-2 items-center">
-          <Link href="/"><button onClick={handleUnload} className="text-lg hover:border-neutral-400 border px-3 py-1 rounded-md">Home</button></Link>
-          <Link href="/mml"><button onClick={handleUnload} className="text-lg hover:border-neutral-400 border px-3 py-1 rounded-md">MML</button></Link>
-          <Link href="/unity"><button className="text-lg border-neutral-500 border px-3 py-1 rounded-md">Unity</button></Link>
+          <Link href="/"><button onClick={handleUnload} className="text-lg dark:text-black hover:border-neutral-400 border px-3 py-1 rounded-md">Home</button></Link>
+          <Link href="/mml"><button onClick={handleUnload} className="text-lg dark:text-black hover:border-neutral-400 border px-3 py-1 rounded-md">MML</button></Link>
+          <Link href="/unity"><button className="text-lg dark:text-black border-neutral-500 border px-3 py-1 rounded-md">Unity</button></Link>
         </nav>
         <div className="flex items-center">
         <ConnectButton />

@@ -42,12 +42,12 @@ export default function Home() {
   }, [isSignedIn, data, wt]);
 
   return (
-    <main className="flex min-h-[calc(100vh-80px)] w-screen relative flex-col">
+    <main className="flex min-h-[calc(100vh-80px)] w-screen relative flex-col dark:bg-neutral-200">
       <div className="flex justify-between bg-white p-4 border-b border-neutral-200">
         <nav className="flex gap-2 items-center">
-          <Link href="/"><button className="text-lg border-neutral-500 border px-3 py-1 rounded-md">Home</button></Link>
-          <Link href="/mml"><button className="text-lg hover:border-neutral-400 border px-3 py-1 rounded-md">MML</button></Link>
-          <Link href="/unity"><button className="text-lg hover:border-neutral-400 border px-3 py-1 rounded-md">Unity</button></Link>
+          <Link href="/"><button className="text-lg dark:text-black border-neutral-500 border px-3 py-1 rounded-md">Home</button></Link>
+          <Link href="/mml"><button className="text-lg dark:text-black hover:border-neutral-400 border px-3 py-1 rounded-md">MML</button></Link>
+          <Link href="/unity"><button className="text-lg dark:text-black hover:border-neutral-400 border px-3 py-1 rounded-md">Unity</button></Link>
         </nav>
         <div className="flex items-center">
         <ConnectButton />
@@ -66,7 +66,7 @@ export default function Home() {
             Mode: {mode}
           </button>
           <div className="flex items-center gap-2">
-            <label htmlFor="color">Primary Color:</label>
+            <label htmlFor="color" className="dark:text-black">Primary Color:</label>
             <input
               type="color"
               className="cursor-pointer"

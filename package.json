@@ -3,15 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3004",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
     "@mml-io/networked-dom-document": "^0.18.0",
-    "@otherpage/connect": "^0.3.0",
-    "@otherpage/connect-next-siwop": "^0.3.0",
+    "@otherpage/connect": "^0.4.0",
+    "@otherpage/connect-siwop": "^0.4.0",
+    "@otherpage/connect-next-siwop": "^0.4.0",
     "axios": "^1.7.5",
     "ethers": "^5",
     "ioredis": "^5.4.1",

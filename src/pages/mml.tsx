@@ -1,11 +1,13 @@
 'use client'
 
 import { useAppContext } from '@/contexts/app-provider';
-import { ConnectButton, useSIWOP } from '@otherpage/connect';
+import { ConnectButton } from '@otherpage/connect';
+import { useSIWOP } from '@otherpage/connect-siwop';
 import { Fragment, Suspense, useEffect, useState } from 'react';
 
 import dynamic from 'next/dynamic'
 import Link from 'next/link';
+
  
 const DynamicMML = dynamic(() => import('../components/mml.component'), {
   loading: () => <p>Loading...</p>,

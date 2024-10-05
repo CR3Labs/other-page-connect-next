@@ -1,4 +1,5 @@
-import { ConnectButton, useSIWOP } from '@otherpage/connect';
+import { ConnectButton } from '@otherpage/connect';
+import { useSIWOP } from '@otherpage/connect-siwop';
 import Link from 'next/link';
 import { Fragment, useEffect } from 'react';
 import { Unity, useUnityContext } from "react-unity-webgl";

@@ -13,7 +13,7 @@ export default function Home() {
   const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     handleSetPrimaryColor(e.target.value as `#${string}`);
   };
-  const { appUrl, clientId, isSignedIn, data } = useSIWOP();
+  const { idToken, appUrl, clientId, isSignedIn, data } = useSIWOP();
   const [wt, setWt] = useState<any>(new Date().getTime());
   const [avatar, setAvatar] = useState<any>(null);
 
@@ -34,13 +34,15 @@ export default function Home() {
     setAvatar(null);
 
     if (!data?.id) return;
+
+    console.log('idToken', idToken);
       
     fetch(`/api/avatar/${data.id}`).then(res => res.json()).then(avatar => {
       if (avatar) {
         setAvatar(avatar);
       }
     })
-  }, [isSignedIn, data, wt]);
+  }, [isSignedIn, data, wt, idToken]);
 
   return (
     <main className="flex min-h-[calc(100vh-80px)] w-screen relative flex-col dark:bg-neutral-200">

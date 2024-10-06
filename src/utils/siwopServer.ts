@@ -1,5 +1,6 @@
 import { configureServerSideSIWOP } from '@otherpage/connect-next-siwop';
 import Redis from "ioredis"
+import { jwtDecode } from './jwt-decode';
 
 export const siwopServer = configureServerSideSIWOP({
   config: {
@@ -32,8 +33,10 @@ export const siwopServer = configureServerSideSIWOP({
     async afterToken(req, res, session, token) {
       const redis = new Redis(`rediss://default:${process.env.REDIS_PASS}@thankful-beetle-60647.upstash.io:6379`);
       // const redis = new Redis(`redis://localhost:6379`);
-      await redis.set(`op_token:${session.account.id}`, token.access_token);
-      await redis.set(`op_refresh_token:${session.account.id}`, token.refresh_token);
+      const idToken = jwtDecode(token.id_token);
+      console.log('id_token', idToken);
+      await redis.set(`op_token:${idToken.sub}`, token.access_token);
+      await redis.set(`op_refresh_token:${idToken.sub}`, token.refresh_token);
     },
   }
 });

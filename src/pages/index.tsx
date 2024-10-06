@@ -33,12 +33,11 @@ export default function Home() {
   useEffect(() => {
     setAvatar(null);
 
-    if (!data?.id) return;
-
-    console.log('idToken', idToken);
+    if (!data?.sub) return;
       
-    fetch(`/api/avatar/${data.id}`).then(res => res.json()).then(avatar => {
+    fetch(`/api/avatar/${data.sub}`).then(res => res.json()).then(avatar => {
       if (avatar) {
+        console.log(avatar);
         setAvatar(avatar);
       }
     })

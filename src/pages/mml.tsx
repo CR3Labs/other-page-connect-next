@@ -1,9 +1,8 @@
 'use client'
 
-import { useAppContext } from '@/contexts/app-provider';
 import { ConnectButton } from '@otherpage/connect';
 import { useSIWOP } from '@otherpage/connect-siwop';
-import { Fragment, Suspense, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 
 import dynamic from 'next/dynamic'
 import Link from 'next/link';
@@ -41,9 +40,9 @@ export default function MMLView() {
   useEffect(() => {
     setMML(null);
 
-    if (!data?.id) return;
+    if (!data?.sub) return;
       
-    fetch(`/api/avatar/${data.id}`).then(res => res.json()).then(avatar => {
+    fetch(`/api/avatar/${data.sub}`).then(res => res.json()).then(avatar => {
       const loadout = avatar?.loadouts?.find((l: any) => l.type === 'threejs');
       if (loadout) {
         setMML(loadout?.model);

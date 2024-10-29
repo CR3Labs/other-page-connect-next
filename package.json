@@ -1,6 +1,6 @@
 {
   "name": "other-page-connect-next",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -10,9 +10,9 @@
   },
   "dependencies": {
     "@mml-io/networked-dom-document": "^0.18.0",
-    "@otherpage/connect": "^0.5.1",
-    "@otherpage/connect-siwop": "^0.5.1",
-    "@otherpage/connect-next-siwop": "^0.5.1",
+    "@otherpage/connect": "^1.0.1",
+    "@otherpage/connect-siwop": "^1.0.1",
+    "@otherpage/connect-next-siwop": "^1.0.1",
     "axios": "^1.7.5",
     "ethers": "^5",
     "ioredis": "^5.4.1",

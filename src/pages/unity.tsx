@@ -1,5 +1,4 @@
-import { ConnectButton } from '@otherpage/connect';
-import { useSIWOP } from '@otherpage/connect-siwop';
+import { SiwopButton, useSIWOP } from '@otherpage/connect-siwop';
 import Link from 'next/link';
 import { Fragment, useEffect } from 'react';
 import { Unity, useUnityContext } from "react-unity-webgl";
@@ -25,8 +24,8 @@ export default function UnityView() {
   });
 
   useEffect(() => {
-      // DEV: example of sending wallet address to Unity through Controller
-      sendMessage("Web3Controller", "WalletChanged", data?.address || '');
+    // DEV: example of sending wallet address to Unity through Controller
+    sendMessage("Web3Controller", "WalletChanged", data?.address || '');
   }, [isLoaded])
 
   useEffect(() => {
@@ -39,14 +38,15 @@ export default function UnityView() {
     <main className="bg-neutral-300">
       <div className="flex justify-between bg-white p-4 border-b border-neutral-200 absolute top-0 z-10 w-screen">
         <nav className="flex gap-2 items-center">
-          <Link href="/"><button onClick={handleUnload} className="text-lg dark:text-black hover:border-neutral-400 border px-3 py-1 rounded-md">Home</button></Link>
-          <Link href="/mml"><button onClick={handleUnload} className="text-lg dark:text-black hover:border-neutral-400 border px-3 py-1 rounded-md">MML</button></Link>
-          <Link href="/unity"><button className="text-lg dark:text-black border-neutral-500 border px-3 py-1 rounded-md">Unity</button></Link>
+          <Link href="/"><button className="text-lg dark:text-black hover:border-neutral-500 border px-3 py-1 rounded-md">Home</button></Link>
+          <Link href="/wallet"><button className="text-lg dark:text-black hover:border-neutral-500 border px-3 py-1 rounded-md">Wallet</button></Link>
+          <Link href="/mml"><button className="text-lg dark:text-black hover:border-neutral-400 border px-3 py-1 rounded-md">MML</button></Link>
+          <Link href="/unity"><button className="text-lg dark:text-black border-neutral-400 border px-3 py-1 rounded-md">Unity</button></Link>
         </nav>
         <div className="flex items-center">
-        <ConnectButton />
-        {isSignedIn && <button className="bg-neutral-900 text-white rounded-md p-3 ml-1 text-sm" onClick={openAccount}>
-          Account
+          <SiwopButton showAvatar={true} showSignOutButton={isSignedIn} />
+          {isSignedIn && <button className="bg-neutral-900 text-white rounded-md p-3 ml-1 text-sm" onClick={openAccount}>
+            Account
           </button>}
         </div>
       </div>
@@ -54,8 +54,8 @@ export default function UnityView() {
         <Fragment>
           {!isSignedIn && (
             <div className="flex flex-col items-center gap-2">
-              <img className="w-[400px]" src="https://vora.xyz/_next/image?url=%2Fimg%2Flogo-dashbored.png&w=2048&q=75"/>
-              <ConnectButton />
+              <img className="w-[400px]" src="https://vora.xyz/_next/image?url=%2Fimg%2Flogo-dashbored.png&w=2048&q=75" />
+              <SiwopButton showAvatar={true} showSignOutButton={isSignedIn} />
             </div>
           )}
           {isSignedIn && !isLoaded && (<div className="text-lg mb-6 font-medium"><LoadingProgress progress={loadingProgression} /></div>)}
@@ -67,11 +67,11 @@ export default function UnityView() {
 }
 
 
-function LoadingProgress({progress}: {readonly progress: number}) {
+function LoadingProgress({ progress }: { readonly progress: number }) {
   return (
     <div className='absolute flex size-full flex-col items-center justify-center gap-6 p-4'>
       <div className='mx-4 box-content h-3 w-80 max-w-full border border-white'>
-        <div className='h-3 bg-white' style={{width: `${progress * 100}%`}} />
+        <div className='h-3 bg-white' style={{ width: `${progress * 100}%` }} />
       </div>
     </div>
   );

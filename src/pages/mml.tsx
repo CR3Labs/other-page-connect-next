@@ -1,7 +1,7 @@
 'use client'
 
 import { ConnectButton } from '@otherpage/connect';
-import { useSIWOP } from '@otherpage/connect-siwop';
+import { SiwopButton, useSIWOP } from '@otherpage/connect-siwop';
 import { Fragment, useEffect, useState } from 'react';
 
 import dynamic from 'next/dynamic'
@@ -58,15 +58,16 @@ export default function MMLView() {
     <main className="flex min-h-[calc(100vh-80px)] w-screen relative flex-col dark:bg-neutral-200">
       <div className="flex justify-between bg-white p-4 border-b border-neutral-200">
         <nav className="flex gap-2 items-center">
-          <Link href="/"><button onClick={handleUnload} className="text-lg dark:text-black hover:border-neutral-400 border px-3 py-1 rounded-md">Home</button></Link>
-          <Link href="/mml"><button className="text-lg dark:text-black border-neutral-500 border px-3 py-1 rounded-md">MML</button></Link>
-          <Link href="/unity"><button onClick={handleUnload}  className="text-lg dark:text-black hover:border-neutral-400 border px-3 py-1 rounded-md">Unity</button></Link>
+          <Link href="/"><button className="text-lg dark:text-black hover:border-neutral-500 border px-3 py-1 rounded-md">Home</button></Link>
+          <Link href="/wallet"><button className="text-lg dark:text-black hover:border-neutral-500 border px-3 py-1 rounded-md">Wallet</button></Link>
+          <Link href="/mml"><button className="text-lg dark:text-black border-neutral-400 border px-3 py-1 rounded-md">MML</button></Link>
+          <Link href="/unity"><button className="text-lg dark:text-black hover:border-neutral-400 border px-3 py-1 rounded-md">Unity</button></Link>
         </nav>
         <div className="flex items-center">
-        <ConnectButton />
-        {isSignedIn && <button className="bg-neutral-900 text-white rounded-md p-3 ml-1 text-sm" onClick={openAccount}>
-          Account
-          </button>}
+          <SiwopButton showAvatar={true} showSignOutButton={isSignedIn} />
+          {isSignedIn && <button className="bg-neutral-900 text-white rounded-md p-3 ml-1 text-sm" onClick={openAccount}>
+            Account
+            </button>}
         </div>
       </div>
       <div className="flex min-h-[calc(100vh-80px)] justify-center w-screen">
@@ -84,7 +85,7 @@ export default function MMLView() {
                     <path d="M414.851 11L423.851 26.5885L459.851 88.9423L413.069 167.913L404.069 152.325L441.495 89.1481L405.495 26.7942L414.851 11Z" fill="black"/>
                   </svg>
                 </div>
-                <ConnectButton />
+                <SiwopButton showAvatar={true} showSignOutButton={isSignedIn} />
               </div>
             )}
             {isSignedIn && !mml && (<div className="text-lg mb-6 font-medium">No Avatar MML Model Found</div>)}

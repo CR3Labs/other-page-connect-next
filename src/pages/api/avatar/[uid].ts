@@ -10,7 +10,7 @@ type DataResponse = {
   error?: string;
 };
 
-const API_URL = 'https://alpha-api.other.page/v1';
+const API_URL = 'https://api.other.page/v1';
 
 async function refreshToken(uid: string) {
   const token = await redis.get(`op_refresh_token:${uid}`);

@@ -60,34 +60,35 @@ export default function WalletConnectView() {
           </button>}
         </div>
       </div>
-      <div className="absolute items-start left-4 top-24 border rounded-lg border-neutral-300">
-        <div className="font-medium text-center bg-neutral-300 text-black rounded-t-lg p-2 w-full">Connect Modal Theme</div>
-        <div className="p-4 flex flex-col gap-4">
-          <button
-            onClick={toggleMode}
-            className={`shadow p-2 rounded-md ${mode === 'dark' ? 'bg-black text-white' : 'bg-white text-black'}`}
-          >
-            Mode: {mode}
-          </button>
-          <div className="flex items-center gap-2">
-            <label htmlFor="color" className="dark:text-black">Primary Color:</label>
-            <input
-              type="color"
-              className="cursor-pointer"
-              id="color"
-              value={primaryColor}
-              onChange={handleColorChange}
-            />
+      <div className="flex justify-center min-h-[calc(100vh-80px)] w-screen">
+        <div className="border rounded-lg p-4" style={{ borderColor: 'black !important', margin: '10px' }}>
+          <div style={{ color: 'black'}} className="font-medium text-center rounded-t-lg p-2 w-full ">Connect Modal Theme</div>
+          <div className="p-4 flex flex-col gap-4">
+            <button
+              onClick={toggleMode}
+              style={{ backgroundColor: mode === 'dark' ? 'black' : 'white', color: mode === 'dark' ? 'white' : 'black' }}
+              className={`shadow p-2 rounded-md`}
+            >
+              Mode: {mode}
+            </button>
+            <div className="flex items-center gap-2">
+              <label htmlFor="color" className="dark:text-black">Primary Color:</label>
+              <input
+                type="color"
+                className="cursor-pointer"
+                id="color"
+                value={primaryColor}
+                onChange={handleColorChange}
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div className="flex justify-center min-h-[calc(100vh-80px)] w-screen">
         <div className="w-full rounded-lg flex justify-center items-center flex-col">
           <Fragment>
             {!isSignedIn && (
               <div className="flex flex-col items-center gap-4">
                 <img src="https://cdn.other.page/op-logo-black.png"/>
-                <div className="text-md mb-6 font-medium">Other Page Connect + Wallet Connect</div>
+                <div className="text-md mb-6 font-medium dark:text-black">Other Page Connect + Wallet Connect</div>
                 <ConnectButton />
               </div>
             )}

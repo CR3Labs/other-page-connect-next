@@ -54,7 +54,7 @@ export default function Home() {
       <div className="flex justify-center min-h-[calc(100vh-80px)] w-screen">
         <div className="w-full rounded-lg flex justify-center items-center flex-col gap-4">
           <img src="https://cdn.other.page/op-logo-black.png"/>
-          <div className="text-md mb-6 font-medium">Default Other Page Connect</div>
+          <div className="text-md mb-6 font-medium dark:text-black">Default Other Page Connect</div>
           <SiwopButton showAvatar={true} showSignOutButton={isSignedIn} />
           <Fragment>
             {isSignedIn && (<div>

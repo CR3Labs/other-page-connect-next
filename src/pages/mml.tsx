@@ -58,10 +58,10 @@ export default function MMLView() {
     <main className="flex min-h-[calc(100vh-80px)] w-screen relative flex-col dark:bg-neutral-200">
       <div className="flex justify-between bg-white p-4 border-b border-neutral-200">
         <nav className="flex gap-2 items-center">
-          <Link href="/"><button className="text-lg dark:text-black hover:border-neutral-500 border px-3 py-1 rounded-md">Home</button></Link>
-          <Link href="/wallet"><button className="text-lg dark:text-black hover:border-neutral-500 border px-3 py-1 rounded-md">Wallet</button></Link>
-          <Link href="/mml"><button className="text-lg dark:text-black border-neutral-400 border px-3 py-1 rounded-md">MML</button></Link>
-          <Link href="/unity"><button className="text-lg dark:text-black hover:border-neutral-400 border px-3 py-1 rounded-md">Unity</button></Link>
+          <Link href="/"><button onClick={handleUnload} className="text-lg dark:text-black hover:border-neutral-500 border px-3 py-1 rounded-md">Home</button></Link>
+          <Link href="/wallet"><button onClick={handleUnload} className="text-lg dark:text-black hover:border-neutral-500 border px-3 py-1 rounded-md">Wallet</button></Link>
+          <Link href="/mml"><button onClick={handleUnload} className="text-lg dark:text-black border-neutral-400 border px-3 py-1 rounded-md">MML</button></Link>
+          <Link href="/unity"><button onClick={handleUnload} className="text-lg dark:text-black hover:border-neutral-400 border px-3 py-1 rounded-md">Unity</button></Link>
         </nav>
         <div className="flex items-center">
           <SiwopButton showAvatar={true} showSignOutButton={isSignedIn} />

@@ -21,7 +21,6 @@ export const siwopServer = configureServerSideSIWOP({
     ].join(' '), // Your SIWOP scopes
   },
   session: {
-    cookieName: 'opconnect-next-siwop',
     password: process.env.SESSION_SECRET,
     cookieOptions: {
       httpOnly: true,

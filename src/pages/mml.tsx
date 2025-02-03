@@ -76,7 +76,7 @@ export default function MMLView() {
                 <SiwopButton showAvatar={true} showSignOutButton={isSignedIn} />
               </div>
             )}
-            {isSignedIn && <iframe src={"http://localhost:8080?_s=" + idToken} className="w-full h-full" />}
+            {isSignedIn && <iframe src={"https://world.other.page?_s=" + idToken} className="w-full h-full" />}
             {/* {isSignedIn && !mml && (<div className="text-lg mb-6 font-medium">No Avatar MML Model Found</div>)} */}
             {/* {isSignedIn && mml && <DynamicMML name={name || ''} model={mml} badges={badges} />} */}
           </Fragment>

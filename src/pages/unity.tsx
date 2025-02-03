@@ -1,3 +1,4 @@
+import NavComponent from '@/components/nav.component';
 import { SiwopButton, useSIWOP } from '@otherpage/connect-siwop';
 import Link from 'next/link';
 import { Fragment, useEffect } from 'react';
@@ -36,20 +37,7 @@ export default function UnityView() {
 
   return (
     <main className="bg-neutral-300">
-      <div className="flex justify-between bg-white p-4 border-b border-neutral-200 absolute top-0 z-10 w-screen">
-        <nav className="flex gap-2 items-center">
-          <Link href="/"><button className="text-lg dark:text-black hover:border-neutral-500 border px-3 py-1 rounded-md">Home</button></Link>
-          <Link href="/wallet"><button className="text-lg dark:text-black hover:border-neutral-500 border px-3 py-1 rounded-md">Wallet</button></Link>
-          <Link href="/mml"><button className="text-lg dark:text-black hover:border-neutral-400 border px-3 py-1 rounded-md">MML</button></Link>
-          <Link href="/unity"><button className="text-lg dark:text-black border-neutral-400 border px-3 py-1 rounded-md">Unity</button></Link>
-        </nav>
-        <div className="flex items-center">
-          <SiwopButton showAvatar={true} showSignOutButton={isSignedIn} />
-          {isSignedIn && <button className="bg-neutral-900 text-white rounded-md p-3 ml-1 text-sm" onClick={openAccount}>
-            Account
-          </button>}
-        </div>
-      </div>
+      <NavComponent active="unity" />
       <div className="h-screen flex justify-center items-center">
         <Fragment>
           {!isSignedIn && (

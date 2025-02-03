@@ -1,7 +1,7 @@
 'use client'
 
+import NavComponent from '@/components/nav.component';
 import { SiwopButton, useSIWOP } from '@otherpage/connect-siwop';
-import Link from 'next/link';
 import { Fragment, useEffect, useState } from 'react';
 
 export default function Home() {
@@ -36,28 +36,15 @@ export default function Home() {
   }, [isSignedIn, data, wt, idToken]);
 
   return (
-    <main className="flex min-h-[calc(100vh-80px)] w-screen relative flex-col dark:bg-neutral-200">
-      <div className="flex justify-between bg-white p-4 border-b border-neutral-200">
-        <nav className="flex gap-2 items-center">
-          <Link href="/"><button className="text-lg dark:text-black border-neutral-500 border px-3 py-1 rounded-md">Home</button></Link>
-          <Link href="/wallet"><button className="text-lg dark:text-black hover:border-neutral-500 border px-3 py-1 rounded-md">Wallet</button></Link>
-          <Link href="/mml"><button className="text-lg dark:text-black hover:border-neutral-400 border px-3 py-1 rounded-md">MML</button></Link>
-          <Link href="/unity"><button className="text-lg dark:text-black hover:border-neutral-400 border px-3 py-1 rounded-md">Unity</button></Link>
-        </nav>
-        <div className="flex items-center">
-        <SiwopButton showAvatar={true} showSignOutButton={isSignedIn} />
-        {isSignedIn && <button className="bg-neutral-900 text-white rounded-md p-3 ml-1 text-sm" onClick={openAccount}>
-          Account
-          </button>}
-        </div>
-      </div>
-      <div className="flex justify-center min-h-[calc(100vh-80px)] w-screen">
+    <main className="flex min-h-[100vh] w-screen relative flex-col dark:bg-neutral-200">
+      <NavComponent active="home" />
+      <div className="flex justify-center min-h-[100vh] w-screen">
         <div className="w-full rounded-lg flex justify-center items-center flex-col gap-4">
           <img src="https://cdn.other.page/op-logo-black.png"/>
           <div className="text-md mb-6 font-medium dark:text-black">Default Other Page Connect</div>
           <SiwopButton showAvatar={true} showSignOutButton={isSignedIn} />
           <Fragment>
-            {isSignedIn && (<div>
+            {isSignedIn && (<div className="dark:text-black">
               <div className="text-lg mb-6 font-medium">Connected Avatar</div>
               <div className="flex justify-start items-center gap-4">
                 <img src={avatar?.token?.image} className="rounded-full w-[80px]" alt="Avatar" />

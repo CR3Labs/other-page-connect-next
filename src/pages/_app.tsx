@@ -9,7 +9,7 @@ const queryClient = new QueryClient();
 function App({ Component, pageProps }: AppProps) {
   return (
       <QueryClientProvider client={queryClient}>
-        <siwopClient.Provider>
+        <siwopClient.Provider appUrl="http://127.0.0.1:3001">
             <Component {...pageProps} />
         </siwopClient.Provider>
       </QueryClientProvider>

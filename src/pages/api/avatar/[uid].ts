@@ -1,16 +1,19 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import Redis from 'ioredis';
 import axios, { Axios, AxiosError } from 'axios';
+import { siwopServer } from '@/utils/siwopServer';
 
 // Create a Redis client
-const redis = new Redis(`rediss://default:${process.env.REDIS_PASS}@thankful-beetle-60647.upstash.io:6379`);
+// const redis = new Redis(`rediss://default:${process.env.REDIS_PASS}@thankful-beetle-60647.upstash.io:6379`);
+const redis = new Redis(`redis://localhost:6379`);
 
 type DataResponse = {
   data?: any;
   error?: string;
 };
 
-const API_URL = 'https://api.other.page/v1';
+// const API_URL = 'https://api.other.page/v1';
+const API_URL = 'http://127.0.0.1:3003/v1';
 
 async function refreshToken(uid: string) {
   const token = await redis.get(`op_refresh_token:${uid}`);
@@ -23,6 +26,7 @@ async function refreshToken(uid: string) {
     scope: 'avatar.read wallets.read twitter.read discord.read tokens.read communities.read',
   });
 
+  // TODO: we will need to persist the refreshed id_token as well once implemented
   await redis.set(`op_token:${uid}`, data.access_token);
   await redis.set(`op_refresh_token:${uid}`, data.refresh_token);
 }
@@ -47,10 +51,16 @@ async function getAvatar(
   return data;
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse<DataResponse>) {  
+export default async function handler(req: NextApiRequest, res: NextApiResponse<DataResponse>) {
   if (req.method === 'GET') {
+
+    // validate the session by retrieving the current users session
+    const data = await siwopServer.getSession(req, res);
+
+    console.log(data);
+
     try {
-      const token = await redis.get(`op_token:${req.query.uid}`);
+      const token = await redis.get(`id_token:${req.query.uid}`);
 
       if (token === null) {
         return res.status(404).json({ error: 'Data not found' });

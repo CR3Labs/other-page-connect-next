@@ -4,6 +4,7 @@ import { jwtDecode } from './jwt-decode';
 
 export const siwopServer = configureServerSideSIWOP({
   config: {
+    authApiUrl: 'http://127.0.0.1:3003/v1',
     audience: 'other-page-connect-next.vercel.app',
     clientId: process.env.NEXT_PUBLIC_SIWOP_CLIENT_ID,
     redirectUri: process.env.NEXT_PUBLIC_SIWOP_REDIRECT_URI,
@@ -30,12 +31,14 @@ export const siwopServer = configureServerSideSIWOP({
   },
   options: {
     async afterToken(req, res, session, token) {
-      const redis = new Redis(`rediss://default:${process.env.REDIS_PASS}@thankful-beetle-60647.upstash.io:6379`);
-      // const redis = new Redis(`redis://localhost:6379`);
-      const idToken = jwtDecode(token.id_token);
-      console.log('id_token', idToken);
-      await redis.set(`op_token:${idToken.sub}`, token.access_token);
-      await redis.set(`op_refresh_token:${idToken.sub}`, token.refresh_token);
+      // const redis = new Redis(`rediss://default:${process.env.REDIS_PASS}@thankful-beetle-60647.upstash.io:6379`);
+      const redis = new Redis(`redis://localhost:6379`);
+
+      // persist id token
+      if (token.id_token) {
+        const { sub } = jwtDecode(token.id_token);
+        await redis.set(`op_token:${sub}`, token.id_token);
+      }
     },
   }
 });

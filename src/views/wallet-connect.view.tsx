@@ -5,7 +5,6 @@ import { useAppContext } from '@/contexts/app-provider';
 import { ConnectButton } from '@otherpage/connect';
 import { useSIWOP } from '@otherpage/connect-siwop';
 import { Fragment, useEffect, useState } from 'react';
-
   
 export default function WalletConnectView() {
   const { toggleMode, handleSetPrimaryColor, mode, primaryColor } =
@@ -14,35 +13,20 @@ export default function WalletConnectView() {
   const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     handleSetPrimaryColor(e.target.value as `#${string}`);
   };
-  const { idToken, appUrl, clientId, isSignedIn, data } = useSIWOP();
-  const [wt, setWt] = useState<any>(new Date().getTime());
+  const { idToken, isSignedIn, data } = useSIWOP();
   const [avatar, setAvatar] = useState<any>(null);
-
-  const openAccount = () => {
-    const left = (window.innerWidth / 2) - 400;
-    const top = (window.innerHeight / 2) - 380;
-    const win = window.open(`${appUrl}/connect/settings?client_id=${clientId}`, "mozillaWindow", `left=${left},top=${top},width=800,height=760`)
-    var timer = setInterval(function() { 
-        if(win?.closed) {
-            console.log(win);
-            clearInterval(timer);
-            setWt(new Date().getTime());
-        }
-    }, 1000);
-  };
 
   useEffect(() => {
     setAvatar(null);
 
     if (!data?.sub) return;
       
-    fetch(`/api/avatar/${data.sub}`).then(res => res.json()).then(avatar => {
+    fetch(`/api/avatar`).then(res => res.json()).then(avatar => {
       if (avatar) {
-        console.log(avatar);
         setAvatar(avatar);
       }
     })
-  }, [isSignedIn, data, wt, idToken]);
+  }, [isSignedIn, data, idToken]);
 
   return (
     <main className="flex min-h-[100vh] w-screen relative flex-col dark:bg-neutral-200">

@@ -1,59 +1,24 @@
 'use client'
 
-import { ConnectButton } from '@otherpage/connect';
 import { SiwopButton, useSIWOP } from '@otherpage/connect-siwop';
 import { Fragment, useEffect, useState } from 'react';
 
-import dynamic from 'next/dynamic'
-import Link from 'next/link';
 import NavComponent from '@/components/nav.component';
 
- 
-const DynamicMML = dynamic(() => import('../components/mml.component'), {
-  loading: () => <p>Loading...</p>,
-  ssr: false,
-})
-
 export default function MMLView() {
-  const { appUrl, clientId, isSignedIn, data, idToken } = useSIWOP();
-  const [mml, setMML] = useState<string | null>(null);
-  const [wt, setWt] = useState<any>(new Date().getTime());
-  const [badges, setBadges] = useState<any[]>([]);
-  const [name, setName] = useState<string | null>(null);
-
-  const openAccount = () => {
-    const left = (window.innerWidth / 2) - 400;
-    const top = (window.innerHeight / 2) - 380;
-    const win = window.open(`${appUrl}/connect/settings?client_id=${clientId}`, "mozillaWindow", `left=${left},top=${top},width=800,height=760`)
-    var timer = setInterval(function() { 
-        if(win?.closed) {
-            console.log(win);
-            clearInterval(timer);
-            setWt(new Date().getTime());
-        }
-    }, 1000);
-  };
-
-  const handleUnload = () => {
-    setMML(null);
-  };
+  const { isSignedIn, data, idToken } = useSIWOP();
+  const [token, setToken] = useState<any>(idToken);
+  
+  useEffect(() => {
+    if (idToken) {
+      setToken(idToken);
+    }
+  }, [idToken]);
 
   useEffect(() => {
-    setMML(null);
-
-    if (!data?.sub) return;
-      
-    fetch(`/api/avatar/${data.sub}`).then(res => res.json()).then(avatar => {
-      const loadout = avatar?.loadouts?.find((l: any) => l.type === 'threejs');
-      if (loadout) {
-        setMML(loadout?.model);
-      }
-      if (avatar) {
-        setName(avatar.name);
-        setBadges(avatar.badges?.sort((a: any, b: any) => b.slotId - a.slotId)?.map((b: any) => b.badge));
-      }
-    })
-  }, [isSignedIn, wt, data, name]);
+    if (!isSignedIn || idToken) return;
+    fetch(`/api/account`).then(res => res.json()).then(account => setToken(account.idToken));
+  }, [isSignedIn, data, idToken]);
 
   return (
     <main className="flex min-h-[100vh] w-screen relative flex-col">
@@ -76,7 +41,7 @@ export default function MMLView() {
                 <SiwopButton showAvatar={true} showSignOutButton={isSignedIn} />
               </div>
             )}
-            {isSignedIn && <iframe src={"https://world.other.page?_s=" + idToken} className="w-full h-full" />}
+            {isSignedIn && <iframe src={"https://world.other.page?_s=" + token} className="w-full h-full" />}
             {/* {isSignedIn && !mml && (<div className="text-lg mb-6 font-medium">No Avatar MML Model Found</div>)} */}
             {/* {isSignedIn && mml && <DynamicMML name={name || ''} model={mml} badges={badges} />} */}
           </Fragment>

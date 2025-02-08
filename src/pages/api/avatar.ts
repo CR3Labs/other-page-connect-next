@@ -4,32 +4,16 @@ import axios, { Axios, AxiosError } from 'axios';
 import { siwopServer } from '@/utils/siwopServer';
 
 // Create a Redis client
-// const redis = new Redis(`rediss://default:${process.env.REDIS_PASS}@thankful-beetle-60647.upstash.io:6379`);
-const redis = new Redis(`redis://localhost:6379`);
+const redis = new Redis(`rediss://default:${process.env.REDIS_PASS}@thankful-beetle-60647.upstash.io:6379`);
+// const redis = new Redis(`redis://localhost:6379`);
 
 type DataResponse = {
   data?: any;
   error?: string;
 };
 
-// const API_URL = 'https://api.other.page/v1';
-const API_URL = 'http://127.0.0.1:3003/v1';
-
-async function refreshToken(uid: string) {
-  const token = await redis.get(`op_refresh_token:${uid}`);
-
-  const { data } = await axios.post(`${API_URL}/connect/token`, {
-    grant_type: 'refresh_token',
-    client_id: process.env.NEXT_PUBLIC_SIWOP_CLIENT_ID,
-    client_secret: process.env.SIWOP_CLIENT_SECRET,
-    refresh_token: token,
-    scope: 'avatar.read wallets.read twitter.read discord.read tokens.read communities.read',
-  });
-
-  // TODO: we will need to persist the refreshed id_token as well once implemented
-  await redis.set(`op_token:${uid}`, data.access_token);
-  await redis.set(`op_refresh_token:${uid}`, data.refresh_token);
-}
+const API_URL = 'https://api.other.page/v1';
+// const API_URL = 'http://127.0.0.1:3003/v1';
 
 /**
  * Retrieve a connect users avatar
@@ -55,31 +39,29 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   if (req.method === 'GET') {
 
     // validate the session by retrieving the current users session
-    const data = await siwopServer.getSession(req, res);
-
-    console.log(data);
+    const session = await siwopServer.getSession(req, res);
+    if (!session?.accessToken) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
 
     try {
-      const token = await redis.get(`id_token:${req.query.uid}`);
-
-      if (token === null) {
-        return res.status(404).json({ error: 'Data not found' });
-      }
-
-      const data = await getAvatar(token);
+      // retrieve users connected avatar
+      const data = await getAvatar(session.accessToken);
 
       res.status(200).json(data);
     } catch (error: any) {
       console.log(error);
+
       // refresh token and retry request
       if (error?.status === 401 && !req.query.retry) {
-        await refreshToken(req.query.uid as string);
+        await siwopServer.refreshSession(req, res);
         req.query.retry = 'true';
         return handler(req, res);
       }
 
       console.error('Error:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
+
+      res.status(401).json({ error: 'Session expired' });
     }
   } else {
     // Handle any other HTTP method

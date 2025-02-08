@@ -4,8 +4,8 @@ import { jwtDecode } from './jwt-decode';
 
 export const siwopServer = configureServerSideSIWOP({
   config: {
-    // authApiUrl: 'http://127.0.0.1:3003/v1',
     audience: 'other-page-connect-next.vercel.app',
+    authApiUrl: process.env.SIWOP_API_URL,
     clientId: process.env.NEXT_PUBLIC_SIWOP_CLIENT_ID,
     redirectUri: process.env.NEXT_PUBLIC_SIWOP_REDIRECT_URI,
     clientSecret: process.env.SIWOP_CLIENT_SECRET,
@@ -31,8 +31,7 @@ export const siwopServer = configureServerSideSIWOP({
   },
   options: {
     async afterToken(req, res, session, token) {
-      const redis = new Redis(`rediss://default:${process.env.REDIS_PASS}@thankful-beetle-60647.upstash.io:6379`);
-      // const redis = new Redis(`redis://localhost:6379`);
+      const redis = new Redis(process.env.REDIS_URL as string);
 
       // persist id token
       if (token.id_token) {

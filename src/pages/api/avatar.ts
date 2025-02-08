@@ -1,19 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import Redis from 'ioredis';
-import axios, { Axios, AxiosError } from 'axios';
+import axios from 'axios';
 import { siwopServer } from '@/utils/siwopServer';
 
-// Create a Redis client
-const redis = new Redis(`rediss://default:${process.env.REDIS_PASS}@thankful-beetle-60647.upstash.io:6379`);
-// const redis = new Redis(`redis://localhost:6379`);
 
 type DataResponse = {
   data?: any;
   error?: string;
 };
 
-const API_URL = 'https://api.other.page/v1';
-// const API_URL = 'http://127.0.0.1:3003/v1';
+const API_URL = process.env.SIWOP_API_URL;
 
 /**
  * Retrieve a connect users avatar

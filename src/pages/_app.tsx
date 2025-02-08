@@ -9,7 +9,7 @@ const queryClient = new QueryClient();
 function App({ Component, pageProps }: AppProps) {
   return (
       <QueryClientProvider client={queryClient}>
-        <siwopClient.Provider>
+        <siwopClient.Provider appUrl={process.env.NEXT_PUBLIC_APP_URL}>
             <Component {...pageProps} />
         </siwopClient.Provider>
       </QueryClientProvider>

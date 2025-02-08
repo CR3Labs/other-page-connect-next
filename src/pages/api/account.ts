@@ -4,8 +4,8 @@ import { siwopServer } from '@/utils/siwopServer';
 import { jwtDecode } from '@/utils/jwt-decode';
 
 // Create a Redis client
-const redis = new Redis(`rediss://default:${process.env.REDIS_PASS}@thankful-beetle-60647.upstash.io:6379`);
-// const redis = new Redis(`redis://localhost:6379`);
+// const redis = new Redis(`rediss://default:${process.env.REDIS_PASS}@thankful-beetle-60647.upstash.io:6379`);
+const redis = new Redis(process.env.REDIS_URL as string);
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
   if (req.method === 'GET') {

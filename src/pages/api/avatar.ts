@@ -31,19 +31,18 @@ async function getAvatar(
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<DataResponse>) {
+  // validate the session by retrieving the current users session
+  const session = await siwopServer.getSession(req, res);
+  if (!session?.accessToken) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
   if (req.method === 'GET') {
-
-    // validate the session by retrieving the current users session
-    const session = await siwopServer.getSession(req, res);
-    if (!session?.accessToken) {
-      return res.status(401).json({ error: 'Unauthorized' });
-    }
-
     try {
       // retrieve users connected avatar
       const data = await getAvatar(session.accessToken);
 
-      res.status(200).json(data);
+      return res.status(200).json(data);
     } catch (error: any) {
       console.log(error);
 
@@ -56,11 +55,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
       console.error('Error:', error);
 
-      res.status(401).json({ error: 'Session expired' });
+      return res.status(401).json({ error: 'Session expired' });
     }
-  } else {
-    // Handle any other HTTP method
-    res.setHeader('Allow', ['GET']);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
-  }
+  } 
+
+  // Handle any other HTTP method
+  res.setHeader('Allow', ['GET']);
+  res.status(405).end(`Method ${req.method} Not Allowed`);
 }

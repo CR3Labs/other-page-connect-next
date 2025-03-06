@@ -11,8 +11,8 @@
   "dependencies": {
     "@mml-io/networked-dom-document": "^0.18.0",
     "@otherpage/connect": "^1.0.2",
-    "@otherpage/connect-siwop": "^1.0.2",
     "@otherpage/connect-next-siwop": "^1.0.3",
+    "@otherpage/connect-siwop": "^1.0.2",
     "axios": "^1.7.5",
     "ethers": "^5",
     "ioredis": "^5.4.1",
@@ -38,7 +38,7 @@
   "peerDependencies": {
     "@tanstack/react-query": "^5.17.15",
     "siwe": "^2.1.4",
-    "viem": "^2.0.6",
-    "wagmi": "^2.2.1"
+    "viem": "^2.23.6",
+    "wagmi": "^2.14.12"
   }
 }
